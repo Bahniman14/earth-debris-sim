@@ -1,0 +1,64 @@
+/* src/pages/LandingPage.css */
+
+.landing-container {
+  width: 100vw;
+  height: 100vh;
+  background: radial-gradient(ellipse at bottom, #0d0d2b 0%, #000000 100%);
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.stars {
+  background: transparent url('https://raw.githubusercontent.com/JulianLaval/canvas-space/master/stars.png') repeat top center;
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  z-index: 0;
+  animation: moveStars 100s linear infinite;
+  opacity: 0.4;
+}
+
+@keyframes moveStars {
+  from { background-position: 0 0; }
+  to { background-position: 10000px 10000px; }
+}
+
+.content {
+  z-index: 1;
+  text-align: center;
+  color: white;
+  max-width: 80%;
+}
+
+.content h1 {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  text-shadow: 0 0 10px cyan;
+}
+
+.content p {
+  font-size: 1.2rem;
+  color: #cccccc;
+  margin-bottom: 2rem;
+}
+
+.enter-btn {
+  background-color: #00ffcc;
+  color: #000;
+  border: none;
+  padding: 12px 24px;
+  font-size: 1rem;
+  border-radius: 50px;
+  cursor: pointer;
+  box-shadow: 0 0 20px #00ffcc;
+  transition: all 0.3s ease;
+}
+
+.enter-btn:hover {
+  background-color: #0ff;
+  transform: scale(1.1);
+  box-shadow: 0 0 40px #00ffcc;
+}
