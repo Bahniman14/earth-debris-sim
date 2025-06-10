@@ -6,11 +6,12 @@ import * as THREE from 'three';
 
 const Earth = () => {
   const [colorMap, specularMap, cloudMap, nightMap] = useLoader(TextureLoader, [
-    '/src/assets/textures/earth_day.jpg',
-    '/src/assets/textures/earth_specular.jpg',
-    '/src/assets/textures/earth_clouds.png',
-    '/src/assets/textures/earth_nightmap.jpg'
-  ]);
+  '/textures/earth_day.jpg',
+  '/textures/earth_specular.jpg',
+  '/textures/earth_clouds.png',
+  '/textures/earth_nightmap.jpg'
+]);
+
 
   const earthRef = useRef();
   const cloudRef = useRef();

@@ -15,7 +15,7 @@ function SimulationView() {
     setLoading(true)
     console.log(`📡 Fetching data for type ${type}...`)
     try {
-      const res = await fetch(`http://127.0.0.1:8000/precomputed_positions?type=${type}`)
+      const res = await fetch(`https://earth-debris-sim.onrender.com/precomputed_positions?type=${type}`)
       if (!res.ok) throw new Error(`Failed to fetch data for type ${type}`)
 
       const data = await res.json()
