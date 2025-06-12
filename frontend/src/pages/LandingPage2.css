@@ -5,6 +5,12 @@
   box-sizing: border-box;
 }
 
+html, body {
+  width: 100%;
+  overflow-x: hidden;
+}
+
+
 /* Main container */
 .landing-container {
   width: 100vw;
@@ -16,6 +22,8 @@
   align-items: center;
   justify-content: center;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  flex-direction: column;
+  text-align: center;
 }
 
 /* Animated Starfield Background */
@@ -143,6 +151,9 @@
   text-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
   line-height: 1.1;
   display: block;
+  max-width: 100%;
+  word-wrap: break-word;
+  margin-bottom: 10px;
 }
 
 .subtitle-inline {
@@ -182,6 +193,7 @@
   letter-spacing: 0.05em;
   font-weight: 300;
   text-transform: uppercase;
+  margin-bottom: 40px;
 }
 
 /* Enter Button */
@@ -198,7 +210,9 @@
   cursor: pointer;
   transition: all 0.3s ease;
   overflow: hidden;
-  margin-bottom: 60px;
+  margin-bottom: 15px;
+  min-width: 280px;
+  justify-content: center;
   min-width: 280px;
 }
 
@@ -284,8 +298,15 @@
     padding: 15px;
   }
   
+@media (max-width: 360px) {
+  .enter-button {
+    min-width: 90%;
+  }
+}
+
   .stats-container {
     gap: 30px;
+    align-items: center;
   }
   
   .stat-number {
@@ -304,6 +325,10 @@
     flex-direction: column;
     gap: 20px;
   }
+
+  .content {
+    padding: 10px 15px;
+  }
   
   .subtitle {
     margin-bottom: 30px;
@@ -312,4 +337,44 @@
   .enter-button {
     margin-bottom: 40px;
   }
+}
+
+.track-button {
+  margin-bottom: 20px;
+  background-color: #0f3d57;
+  color: #00ffff;
+  padding: 12px 30px;
+  font-size: 1.1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  position: relative;
+  justify-content: center;
+  overflow: hidden;
+  transition: background 0.3s ease;
+}
+
+.track-button:hover {
+  background-color: #155c7c;
+}
+
+.track-button .button-glow {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 255, 255, 0.2);
+  transform: skewX(-45deg);
+  transition: left 0.5s ease;
+}
+
+.track-button:hover .button-glow {
+  left: 100%;
+}
+.button-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }

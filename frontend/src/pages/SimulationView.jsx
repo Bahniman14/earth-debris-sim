@@ -1,15 +1,24 @@
 // src/pages/SimulationView.jsx
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import { Canvas } from '@react-three/fiber'
 import { OrbitControls, Stars } from '@react-three/drei'
 import Earth from '../components/Earth'
 import SpaceObjects from '../components/SpaceObjects'
-import TimeTicker from '../components/TimeTicker' // ✅ New component for smooth animation
+import TimeTicker from '../components/TimeTicker'
 
 function SimulationView() {
+  const [pageLoading, setPageLoading] = useState(true)
   const [loading, setLoading] = useState(false)
   const [trajectoryData, setTrajectoryData] = useState({})
-  const [timeIndex, setTimeIndex] = useState(0) // ✅ Float for interpolation
+  const [timeIndex, setTimeIndex] = useState(0)
+
+  // Simulate Earth and texture loading
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setPageLoading(false)
+    }, 2000)
+    return () => clearTimeout(timer)
+  }, [])
 
   const fetchTrajectoryData = useCallback(async (type) => {
     setLoading(true)
@@ -22,7 +31,6 @@ function SimulationView() {
       const limitedData = Object.fromEntries(Object.entries(data).slice(0, 10))
 
       console.log(`✅ Data fetched for type ${type}:`, limitedData)
-      // setTrajectoryData(limitedData)
       setTrajectoryData(data)
       setTimeIndex(0)
     } catch (err) {
@@ -34,15 +42,25 @@ function SimulationView() {
 
   return (
     <div className="simulation-canvas">
-      <div className="button-panel">
-        <button className="sim-button" onClick={() => fetchTrajectoryData(1)} disabled={loading}>Debris</button>
-        <button className="sim-button" onClick={() => fetchTrajectoryData(2)} disabled={loading}>Payloads</button>
-        <button className="sim-button" onClick={() => fetchTrajectoryData(3)} disabled={loading}>Rocket Bodies</button>
-        <button className="sim-button clean-button" onClick={() => setTrajectoryData({})} disabled={loading}> 🧹 Clean </button>
+      {/* Earth loading screen */}
+      {pageLoading && (
+        <div className="loading-screen">
+          <div className="spinner"></div>
+          <p>🌍 Earth is preparing...</p>
+        </div>
+      )}
 
+      {/* Button panel */}
+      {!pageLoading && (
+        <div className="button-panel">
+          <button className="sim-button" onClick={() => fetchTrajectoryData(1)} disabled={loading}>Debris</button>
+          <button className="sim-button" onClick={() => fetchTrajectoryData(2)} disabled={loading}>Payloads</button>
+          <button className="sim-button" onClick={() => fetchTrajectoryData(3)} disabled={loading}>Rocket Bodies</button>
+          <button className="sim-button clean-button" onClick={() => setTrajectoryData({})} disabled={loading}> 🧹 Clean </button>
+        </div>
+      )}
 
-      </div>
-
+      {/* Trajectory data loading overlay */}
       {loading && (
         <div className="loading-overlay">
           <div className="spinner"></div>
@@ -50,38 +68,38 @@ function SimulationView() {
         </div>
       )}
 
-      <Canvas camera={{ position: [0, 0, 3], fov: 60 }}>
-        <color attach="background" args={['#000011']} />
-        <ambientLight intensity={0.2} />
-        <directionalLight position={[5, 3, 5]} intensity={1} />
-        <Stars radius={100} depth={50} count={200} factor={0.05} saturation={0} fade />
-        <Earth />
-        <OrbitControls enableZoom enablePan enableRotate zoomSpeed={0.6} panSpeed={0.8} rotateSpeed={0.4} />
+      {/* Canvas with 3D scene */}
+      {!pageLoading && (
+        <Canvas camera={{ position: [0, 0, 3], fov: 60 }}>
+          <color attach="background" args={['#000011']} />
+          <ambientLight intensity={0.2} />
+          <directionalLight position={[5, 3, 5]} intensity={1} />
+          <Stars radius={100} depth={50} count={200} factor={0.05} saturation={0} fade />
+          <Earth />
+          <OrbitControls enableZoom enablePan enableRotate zoomSpeed={0.6} panSpeed={0.8} rotateSpeed={0.4} />
 
-        <TimeTicker setTimeIndex={setTimeIndex} /> {/* ✅ Smooth frame time controller */}
+          <TimeTicker setTimeIndex={setTimeIndex} />
 
-        {Object.keys(trajectoryData).length > 0 && (
-          <SpaceObjects trajectoryData={trajectoryData} timeIndex={timeIndex} />
-        )}
-      </Canvas>
+          {Object.keys(trajectoryData).length > 0 && (
+            <SpaceObjects trajectoryData={trajectoryData} timeIndex={timeIndex} />
+          )}
+        </Canvas>
+      )}
 
-      <div className="info-panel">
-        <div className="time-display">
-          Time: {Math.floor(timeIndex / 60).toString().padStart(2, '0')}:
-          {(Math.floor(timeIndex) % 60).toString().padStart(2, '0')} UTC
+      {/* Info Panel */}
+      {!pageLoading && (
+        <div className="info-panel">
+          <div className="time-display">
+            Time: {Math.floor(timeIndex / 60).toString().padStart(2, '0')}:
+            {(Math.floor(timeIndex) % 60).toString().padStart(2, '0')} UTC
+          </div>
+          <div className="object-count">
+            Objects: {Object.keys(trajectoryData).length}
+          </div>
         </div>
-        <div className="object-count">
-          Objects: {Object.keys(trajectoryData).length}
-        </div>
-      </div>
+      )}
     </div>
   )
 }
 
 export default SimulationView
-
-
-//problems: 
-// 1. the objects are moving for 1 sec only and then disapear. I want them to move smoothly for infinite time
-// 2. the objects are not moving smoothly, they are jumping
-// 3. out of 5 objects only 4 are showing up

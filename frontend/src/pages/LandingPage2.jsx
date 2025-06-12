@@ -30,12 +30,23 @@ const LandingPage = () => {
         <p className="subtitle">
           Explore the invisible threat orbiting our planet
         </p> 
-        <Link to="/simulation">
-        <button className="enter-button">
-          <span className="button-text">ENTER SIMULATION</span>
-          <div className="button-glow"></div>
-        </button>
-        </Link>
+        <div className="button-group">
+  <Link to="/simulation">
+    <button className="enter-button">
+      <span className="button-text">ENTER SIMULATION</span>
+      <div className="button-glow"></div>
+    </button>
+  </Link>
+  <Link to="/track">
+    <button className="track-button">
+      <span className="button-text">TRACK OBJECTS</span>
+      <div className="button-glow"></div>
+    </button>
+  </Link>
+</div>
+
+
+        
         <div className="stats-container">
           <div className="stat">
             <span className="stat-number">14,000+</span>
